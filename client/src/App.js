@@ -9,48 +9,55 @@ class App extends React.Component {
 		super();
 		this.state = {
 			questions: [],
-			answers: {},
+			guesses: {},
 			answerAlert: false,
 			submitting: false
-		}
+		};
 
 		this.questionChange = this.questionChange.bind(this);
-		this.submitAnswers = this.submitAnswers.bind(this);
-	}
-
-	questionChange(event) {
-		let q = event.target.getAttribute("name");
-		let a = event.target.value;
-		let newAnswer = {...this.state.answers};
-		newAnswer[q] = a;
-		
-		this.setState({answerAlert: false, answers: newAnswer});
-	}
-
-	submitAnswers(event) {
-		event.preventDefault();
-		
-		if (Object.keys(this.state.answers).length !== this.state.questions.length) {
-			this.setState({answerAlert: true});
-		} else {
-			this.setState({submitting: true})
-			axios.post("/api/check/", {guesses: this.state.answers}).then(res => {
-				console.log(res.data)
-				this.setState({answerReceived: res.data})
-			})
-		}
+		this.submitGuess = this.submitGuess.bind(this);
 	}
 
 	componentDidMount() {
 		axios.get("/api/questions/").then(res => {
-			this.setState({questions: res.data})
+			// questions will be in the form of {question: str, choices: list, id: int}
+			this.setState({questions: res.data});	
 		})
+	}
+
+	// Called whenever a radio button is pressed
+	questionChange(event) {
+		const q = event.target.getAttribute("name");
+		const a = event.target.value;
+
+		let newGuess = {...this.state.guesses};
+		newGuess[q] = a;
+		
+		// Guess in the form of {question_id (int): guess (str)}
+		this.setState({answerAlert: false, guesses: newGuess});
+	}
+
+	submitGuess(event) {
+		event.preventDefault();
+		
+		if (Object.keys(this.state.guesses).length !== this.state.questions.length) {
+			this.setState({answerAlert: true});
+		} else {
+			this.setState({submitting: true});
+			axios.post("/api/check/", {guesses: this.state.guesses}).then(res => {
+				// Received answers in the form of {question_id (int): [correct? (bool), actual_answer]}
+				this.setState({answerReceived: res.data, submitting: false});
+			}).catch(err => {
+				console.log("Something went wrong.")
+				console.log(err);
+			})
+		}
 	}
 
 	render() {
 		if (this.state.answerReceived) {
 			return (
-				<Review answers={this.state.answerReceived} guesses={this.state.answers} questions={this.state.questions}/>
+				<Review answers={this.state.answerReceived} guesses={this.state.guesses} questions={this.state.questions}/>
 			)
 		} else if (this.state.submitting) {
 			return (
@@ -75,23 +82,22 @@ class App extends React.Component {
 							}
 						</div>
 					</div>
-					
-					
-					<form onSubmit={this.submitAnswers}>
+					<form onSubmit={this.submitGuess}>
 						{
-							this.state.questions.map((q, i) => {
+							this.state.questions.map((q, question_number) => {
 								let question_text = q.question;
 								let choices = q.choices;
+								let id = q.id;
 
 								return (
 									<div className="pb-5" onChange={this.questionChange}>
-										<h5>{i + 1}) {question_text}</h5>
+										<h5>{question_number + 1}) {question_text}</h5>
 										{
 											choices.map((c, c_idx) => {
 												return (
 													<div className="ms-3 form-check">
-														<input className="form-check-input" name={i} id={i + "-" + c_idx} type="radio" value={c}></input>
-														<label className="form-check-label" htmlFor={i + "-" + c_idx}>{c}</label>
+														<input className="form-check-input" name={id} id={question_number + "-" + c_idx} type="radio" value={c}></input>
+														<label className="form-check-label" htmlFor={question_number + "-" + c_idx}>{c}</label>
 													</div>
 												)
 											})
