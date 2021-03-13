@@ -52,7 +52,4 @@ app.mount("/", StaticFiles(directory="client/build", html=True), name="client")
 
 if __name__ == "__main__":
     port = 3030
-    if os.getenv("PORT"):
-        port = int(os.getenv("PORT"))
-    
     uvicorn.run("main:app", port=port, reload=True)

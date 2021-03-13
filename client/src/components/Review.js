@@ -58,7 +58,7 @@ class Review extends React.Component {
                         })
                     }
                     <div className="center">
-                        <button className="btn btn-outline-primary text-center" onClick={() => window.location.reload()}>Try Again?</button>
+                        <button className="btn btn-outline-primary btn-lg text-center" onClick={() => window.location.reload()}>Try Again?</button>
                     </div>
                 </div>
             </div>

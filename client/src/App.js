@@ -107,7 +107,7 @@ class App extends React.Component {
 							})
 						}
 						<div className="center">
-							<button type="submit" className="btn btn-outline-primary text-center">Submit</button>
+							<button type="submit" className="btn btn-outline-primary btn-large text-center">Submit</button>
 						</div>
 					</form>
 				</div>
