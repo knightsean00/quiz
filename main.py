@@ -1,5 +1,6 @@
 import uvicorn
 import json
+import os
 from helper import answer_check
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -41,4 +42,8 @@ def check(data: Guess):
 app.mount("/", StaticFiles(directory="client/build", html=True), name="client")
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=3030, reload=True)
+    port = 3030
+    if os.getenv("PORT"):
+        port = os.getenv("PORT")
+    
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True, interface="wsgi")
