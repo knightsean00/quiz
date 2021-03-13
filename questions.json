@@ -1,0 +1,42 @@
+[
+    {
+        "question": "What is 2 + 2?",
+        "choices": [
+            1,
+            2,
+            4,
+            5
+        ],
+        "answer": 4
+    },
+    {
+        "question": "What is the shell on a crab's back called?",
+        "choices": [
+            "whelk",
+            "carapace",
+            "scallop",
+            "junonia"
+        ],
+        "answer": "carapace"
+    },
+    {
+        "question": "More than 90% of the wildlife found on the world's fourth largest island is found nowhere else on the planet. Name this African country.",
+        "choices": [
+            "Mozambique",
+            "Lesotho",
+            "Angola",
+            "Madagascar"
+        ],
+        "answer": "Madagascar"
+    },
+    {
+        "question": "What is the backend for this website?",
+        "choices": [
+            "FastAPI",
+            "Django",
+            "Flask",
+            "Express.js"
+        ],
+        "answer": "FastAPI"
+    }
+]
