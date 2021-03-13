@@ -2,8 +2,6 @@ import React from 'react';
 import "../scss/bootstrap.scss";
 import "../scss/main.scss";
 
-
-
 class Review extends React.Component {
 	constructor(props) {
 		super(props);
