@@ -82,7 +82,7 @@ class App extends React.Component {
 							}
 						</div>
 					</div>
-					<form onSubmit={this.submitGuess}>
+					<form className="pe-3" onSubmit={this.submitGuess}>
 						{
 							this.state.questions.map((q, question_number) => {
 								let question_text = q.question;
